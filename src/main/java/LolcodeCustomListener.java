@@ -1,11 +1,8 @@
 import com.opencsv.CSVReader;
-import com.opencsv.exceptions.CsvValidationException;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 
-import java.io.FileInputStream;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 public class LolcodeCustomListener extends lolcodeBaseListener {
@@ -16,6 +13,7 @@ public class LolcodeCustomListener extends lolcodeBaseListener {
     private final String info = "Geek info: ";
     private int loopState=0; //0 not if,else 1-yes but already satisfied 2-yes but still waiting
     private boolean isTrue = false;
+//    static List<List<String>> jokes = new ArrayList<>();
 
     public LolcodeCustomListener() {
         variables = new HashMap();
@@ -520,9 +518,12 @@ public class LolcodeCustomListener extends lolcodeBaseListener {
 
     private String tellMeAJoke(){
         Random rand = new Random();
-        int n = rand.nextInt(1622)+1;
+        List<List<String>> jokes = new ArrayList<>();
+//        int n = rand.nextInt(1622)+1;
+        int n = rand.nextInt(1535)+1;
 
-        String csvFile = "res/cleanjokes.csv";
+
+        String csvFile = "cleanjokes.csv";
 
         CSVReader reader = null;
         try {
@@ -531,9 +532,10 @@ public class LolcodeCustomListener extends lolcodeBaseListener {
             while ((line = reader.readNext()) != null) {
                 if(line[0].equals(Integer.toString(n))){return line[1];}
             }
-        } catch (IOException | CsvValidationException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
+
         return "No joke today";
     }
 
@@ -583,15 +585,18 @@ public class LolcodeCustomListener extends lolcodeBaseListener {
         if(mode.equals("GEEK")){System.out.println(info+"You're exiting else if block!");}
     }
 
-
-    public static void main(String[] args) {
+        public static void main(String[] args) {
         // Take program argument as lol file to parse
         try {
 //            ANTLRInputStream input = new ANTLRInputStream(
 //                    new FileInputStream(args[0]));
+            FileReader reader = new FileReader("programs.properties");
+            Properties properties = new Properties();
+            properties.load(reader);
 
+            String path = properties.getProperty("pathToDirectory") + "\\"+properties.getProperty("filenameToRun");
 
-            FileInputStream fileInputStream = new FileInputStream("c:\\examples\\lolProgram3.lol");
+            FileInputStream fileInputStream = new FileInputStream(path);
             ANTLRInputStream input = new ANTLRInputStream(
                     fileInputStream);
             lolcodeLexer lexer = new lolcodeLexer(input);

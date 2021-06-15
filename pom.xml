@@ -19,6 +19,11 @@
             <artifactId>opencsv</artifactId>
             <version>5.4</version>
         </dependency>
+        <dependency>
+            <groupId>com.opencsv</groupId>
+            <artifactId>opencsv</artifactId>
+            <version>4.1</version>
+        </dependency>
 
     </dependencies>
 
@@ -44,6 +49,21 @@
                             </goals>
                         </execution>
                     </executions>
+                </plugin>
+                <plugin>
+                    <!-- Build an executable JAR -->
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>3.1.0</version>
+                    <configuration>
+                        <archive>
+                            <manifest>
+                                <addClasspath>true</addClasspath>
+                                <classpathPrefix>lib/</classpathPrefix>
+                                <mainClass>LolcodeCustomListener</mainClass>
+                            </manifest>
+                        </archive>
+                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>
